@@ -50,3 +50,6 @@ python3 active_side.py
 ```
 
 Caso queira parar o exemplo, digite **fim** como entrada para o lado ativo.
+
+# Evidências do funcionamento
+![Print da execução completa](assets/images/execucao-completa-lado-a-lado.png)  
