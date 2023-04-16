@@ -1,11 +1,15 @@
-# Exemplo basico de aplicacao distribuida usando o modelo de interacao requisicao/resposta (modo ativo/passivo)
-# Uso de Programacao com Sockets, a partir do codigo fornecido em sala de aula
-# LADO ATIVO, que conecta-se com o "servidor de echo" (lado passivo), 
-# envia uma mensagem digitada pelo usuario, aguarda e imprime a mensagem recebida de volta
-# A string fim deve ser usada como comando para o usuario indicar que 
-# nao deseja mais enviar mensagens para o servidor de echo. 
-# Quando esse comando for digitado pelo usuario, a conexao devera ser fechada e a aplicacao encerrada.
-# Nesse caso, nao eh necessario enviar o comando para o lado passivo.
+'''
+Exemplo basico de aplicacao distribuida
+Usa o modelo de interacao requisicao/resposta(modo ativo/passivo)
+Uso de Programacao com Sockets, a partir do codigo fornecido em sala de aula
+LADO ATIVO, que conecta-se com o "servidor de echo" (lado passivo),
+envia uma mensagem digitada pelo usuario, aguarda e imprime a mensagem recebida de volta
+A string fim deve ser usada como comando para o usuario indicar que
+nao deseja mais enviar mensagens para o servidor de echo.
+Quando esse comando for digitado pelo usuario,
+a conexao devera ser fechada e a aplicacao encerrada.
+Nesse caso, nao eh necessario enviar o comando para o lado passivo.
+'''
 
 import socket
 
@@ -28,10 +32,10 @@ while True:
     # confere se a mensagem eh o comando de termino, se for a string fim interrompe a execucao
     if message == "fim":
         break
-    
+
     # envia a mensagem recebida para o par conectado
     sock.send(message.encode())
-    
+
     #espera a resposta do par conectado (chamada pode ser BLOQUEANTE)
     # argumento indica a qtde maxima de bytes da mensagem
     msg_r = sock.recv(1024)

@@ -26,3 +26,27 @@ O **módulo socket** de Python provê acesso à interface Socket POSIX. A funç�
 4. Experimente sua aplicação executando os processos passivo e ativo em terminais (janelas) distintos na mesma máquina (ou em máquinas distintas quando possível).
 
 **Disponibilize seu código**  Disponibilize o código da sua aplicação em um ambiente de acesso remoto (GitHub ou GitLab) e use o formulário de entrega do laboratório para encaminhar as informações solicitadas.
+
+# Como rodar
+
+Para executar o exemplo, basta seguir as instruções a seguir.
+
+Primeiro, suba o lado passivo, executando o seguinte comando no terminal:
+```
+make run-passive-side
+```  
+OU  
+```
+python3 passive_side.py
+```
+
+Depois, suba o lado ativo, executando o seguinte comando no terminal:
+```
+make run-active-side
+```  
+OU  
+```
+python3 active_side.py
+```
+
+Caso queira parar o exemplo, digite **fim** como entrada para o lado ativo.
