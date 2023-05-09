@@ -11,7 +11,7 @@ import sys
 
 MESSAGE_HELP = """Este é um cliente de dicionário.
 As ações disponíveis são:
-get - Consultar os valores para uma palavra.\n
+get - Consultar os valores para uma palavra.
 Para consultar a palavra "teste", digite "get teste"
 set - Adicionar UM único valor por vez para uma palavra. Se a palavra não existir, será criada no dicionário
 Para adicionar o valor "valor" para a palavra "teste", digite "set teste valor"
@@ -20,6 +20,7 @@ Digite "fim" para encerrar o programa\n"""
 
 class Client:
     def __init__(self, host, port):
+        '''Inicializa o cliente com o host e a porta do servidor'''
         self.host = host
         self.port = port
         self.socket = self.connect_to_server()

@@ -1,17 +1,1 @@
-{
-    "aaa": [
-        "aaa",
-        "aaa"
-    ],
-    "aba": [
-        "a",
-        "aba"
-    ],
-    "b": [
-        "aa"
-    ],
-    "banana": [
-        "um",
-        "aa"
-    ]
-}
+{"a": ["kkk", "lll", "kkk", "lll", "kkk", "b"], "kk": ["kkk", "kkkk", "ll"], "ll": ["kk"], "p": ["o"], "l": ["oo"]}

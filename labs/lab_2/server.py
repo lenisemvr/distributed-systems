@@ -1,16 +1,21 @@
-#servidor de echo: lado servidor
-#com finalizacao do lado do servidor
-#com multiplexacao do processamento (atende mais de um cliente com select)
+'''Servidor de um servico de dicionario
+Responsável por receber requisicoes de clientes e processa-las, retornando o resultado.
+Pode ser executado várias vezes para testar o servidor.
+Para executar, digite:
+python3 server.py <porta-do-servidor>'''
 import pprint
 import socket
 import select
 import sys
+import multiprocessing
+import threading
 
 import server.data as data
 from server.processor import Processor
 
 class Server:
     def __init__(self, port):
+        '''Inicializa o servidor com a porta do servidor'''
         self.host = '' # vazio indica que podera receber requisicoes a partir de qq interface de rede da maquina
         self.port = port
         # inicializa classe Data, carregando o arquivo de dados
@@ -21,12 +26,12 @@ class Server:
         self.entries = [sys.stdin]
         #armazena as conexoes ativas
         self.connections = {}
+        self.clients = []
         self.socket = self.start_server()
+        self.lock = threading.Lock()
 
     def start_server(self):
-        '''Cria um socket de servidor e o coloca em modo de espera por conexoes
-        Entrada: porta de acesso do servidor
-        Saida: o socket criado'''
+        '''Cria um socket de servidor e o coloca em modo de espera por conexoes'''
         # cria o socket
         # Internet( IPv4 + TCP)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,8 +45,8 @@ class Server:
         sock.listen(5)
         print(f"Ouvindo na porta {self.port}...")
 
-        # configura o socket para o modo nao-bloqueante
-        sock.setblocking(False)
+        # precisei comentar essa linha para funcionar
+        # sock.setblocking(False)
 
         # inclui o socket principal na lista de entradas de interesse
         self.entries.append(sock)
@@ -66,18 +71,17 @@ class Server:
         Entrada: socket da conexao e endereco do cliente
         Saida: '''
 
-        #recebe dados do cliente
-        body = client_socket.recv(1024) 
-        if not body: # dados vazios: cliente encerrou
-            print(str(addr) + '-> encerrou')
-            del self.connections[client_socket] #retira o cliente da lista de conexoes ativas
-            self.entries.remove(client_socket) #retira o socket do cliente das entradas do select
-            client_socket.close() # encerra a conexao com o cliente
-            return
-        body = self.processor.process(body)
-        # envia dados para o cliente
-        print(f'{str(addr)} vai receber o valor: {body}')
-        client_socket.sendall(bytes(body, encoding='utf-8'))
+        while True:
+            #recebe dados do cliente
+            body = client_socket.recv(1024) 
+            if not body: # dados vazios: cliente encerrou
+                print(str(addr) + '-> encerrou')
+                client_socket.close() # encerra a conexao com o cliente
+                return
+            body = self.processor.process(body)
+            # envia dados para o cliente
+            print(f'{str(addr)} vai receber o valor: {body}')
+            client_socket.sendall(bytes(body, encoding='utf-8'))
     
     def admin_cmd(self):
         '''Trata comandos do admin (entrada padrao)'''
@@ -89,14 +93,17 @@ class Server:
             pprint.pprint(self.data.get_all())
         if cmd == 'delete':
             key = input('Insira a chave que deseja deletar: ')
-            ok = self.data.delete(key)
-            if ok:
-                print('Deletado com sucesso!')
+            self.data.delete(key)
         if cmd == 'fim': #solicitacao de finalizacao do servidor
-            if not self.connections: #somente termina quando nao houver clientes ativos
-                self.socket.close()
-                sys.exit()
-            else: print("ha conexoes ativas")
+            print( "Conferindo se há processos a terminarem...")
+            for c in self.clients:
+                if c.is_alive():
+                    print("Ainda há processos a terminarem...")
+                    c.join()
+            print("Todos os processos terminaram!")
+            print("Finalizando servidor...")
+            self.socket.close()
+            sys.exit()
         elif cmd == 'help':
             print('Comandos disponíveis:')
             print('get: coleta um valor a partir de uma chave')
@@ -108,16 +115,19 @@ class Server:
         '''Inicializa e implementa o loop principal (infinito) do servidor'''
         while True:
             #espera por qualquer entrada de interesse
-            read_list, _, _  = select.select(self.entries, [], [])
+            ready_list, _, _  = select.select(self.entries, [], [])
             #tratar todas as entradas prontas
-            for ready in read_list:
+            for ready in ready_list:
                 if ready == self.socket:  #pedido novo de conexao
                     client_socket, addr = self.accepts_connection()
                     print ('Conectado com: ', addr)
-                    client_socket.setblocking(False) #configura o socket para o modo nao-bloqueante
+                    client = multiprocessing.Process(target=self.handle_request, args=(client_socket, addr))
+                    client.start()
+                    self.clients.append(client)
+                    # client_socket.setblocking(False) #configura o socket para o modo nao-bloqueante
                     # client = threading.Thread(target=self.handle_request, args=(client_socket, addr))
                     # client.start()
-                    self.entries.append(client_socket) #inclui o socket do cliente nas entradas de interesse
+                    # self.entries.append(client_socket) #inclui o socket do cliente nas entradas de interesse
                 elif ready == sys.stdin: #entrada padrao
                     self.admin_cmd()
                 else:
