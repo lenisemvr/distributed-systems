@@ -42,23 +42,24 @@ As mensagens serão de tipos diferentes, conforme a descrição:
 Cliente envia uma mensagem do tipo ***insert*** ao servidor com a **chave** e o **valor** que deseja inserir.  
 Em caso de sucesso:
 - Se o servidor verificar que o dicionário não possui a chave, responde ao cliente que a chave foi criada e o valor foi acrescentado, conforme abaixo:
-> "A chave foi criada e o valor foi inserido com sucesso!"  
+> "A chave <chave> foi atualizada com o valor <valor>"  
 - Se o servidor verificar que o dicionário já possui a chave, responde ao cliente que o valor foi acrescentado, conforme abaixo:  
-> "O valor foi inserido com sucesso!"
+> "A chave <chave> foi criada com o valor <valor>"
 
 Em caso de falha, responde ao cliente:
-> "Falha na execução da ação"
+> "Falha na execução da ação, verifique os argumentos"
 
 Nesse caso, **chave** e **valor** são do tipo *string*.
+
 #### Consulta  
 Cliente envia uma mensagem do tipo ***get*** ao servidor com a chave que deseja consultar.  
 Em caso de sucesso:
 - Se o servidor verificar que o dicionário não possui a chave, responde ao cliente uma lista vazia:  
-> "Resultado para a chave <chave-recebida>: []"
+> "Resultado encontrado para a chave <chave>: []"
 - Se o servidor verificar que o dicionário possui a chave, responde uma lista dos valores associados:  
-> "Resultado para a chave <chave-recebida>: ["valor-1", "valor-2"]"  
+> "Resultado encontrado para a chave <chave>: ["valor-1", "valor-2"]"  
 
 Em caso de falha, responde ao cliente:
-> "Falha na execução da ação"
+> "Falha na execução da ação, verifique os argumentos"
 
 Nesse caso, **chave** é do tipo *string*.
