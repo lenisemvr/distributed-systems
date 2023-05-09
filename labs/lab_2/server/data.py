@@ -1,10 +1,9 @@
-# create a Data class to store and get key and values on a file concurrent safe
-# the file will be opened in the constructor and closed in the destructor
-# the file will be a a json with the following format:
-# { key: [value1, value2, ...], ... }
+'''Classe responsável por gerenciar os dados do servidor'''
+# O funcionamento estah de acordo com o contrato estabelecido na atividade 2
 
 import json
-from threading import Lock
+import multiprocessing
+
 
 class Data:
     def __init__(self, filename):
@@ -12,7 +11,7 @@ class Data:
         '''Abre o arquivo e carrega o json para o dicionario'''
         self.filename = filename
         self.file = open(filename, 'r+')
-        self.lock = Lock()
+        self.lock = multiprocessing.Lock()
 
     def __del__(self):
         '''Destructor'''
@@ -64,17 +63,25 @@ class Data:
             data[key] = [value]
             set_type = "new"
         self.file.seek(0)
-        json.dump(data, self.file, indent=4)
+        json.dump(data, self.file)
+        self.file.truncate()
         self.lock.release()
         return set_type
 
     def delete(self, key):
-        '''Deleta um valor do dicionário'''
+        '''Deleta uma chave e seus valores'''
         self.lock.acquire()
         self.file.seek(0)
-        data = json.load(self.file)
+        try:
+            data = json.load(self.file)
+        except json.decoder.JSONDecodeError:
+            print("Dicionário está vazio... Não há o que deletar")
+            data = {}
         if key in data:
             del data[key]
-        with open(self.filename, 'w') as f:
-            json.dump(data, f, indent=4, sort_keys=True)
+            print(f"Chave {key} deletada com sucesso")
+        self.file.seek(0)
+        json.dump(data, self.file)
+        self.file.truncate()
         self.lock.release()
+    

@@ -184,3 +184,5 @@ null*
 .trash/
 .DS_Store
 
+*/.vscode/
+.vscode/
