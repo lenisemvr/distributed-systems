@@ -45,6 +45,7 @@ A partir da descrição da atividade e da [imagem](assets/draw-remote-dictionary
 Dado o meu entendimento do problema e o conteúdo da disciplina, a minha escolha arquitetural para resolução deste trabalho foi **em camadas**, conforme é possível visualizar na figura abaixo:  
 ![](assets/layered-architecture.png)
 
+
 Essa escolha foi muito baseada em como entendi o fluxo e como me parecia ser uma boa implementação, em que uma camada só pode conversar com suas camadas vizinhas e uma depende da outra para garantia de execução com sucesso. No fluxo de execução, do ponto de vista da pessoa usuária, a camada 3 é a primeira a ser chamada.  
 
 ## Descrição das Camadas
@@ -80,6 +81,13 @@ Camada responsável pela garantia de execução das ações pedidas pela camada 
 
 ### Camada 1 - Acesso e Persistência
 Camada composta pelo componente de **acesso e persistência (COMPONENTE 1)**, que é responsável por: 
+
+Essa escolha foi muito baseada em como entendi o fluxo e como me parecia ser uma boa implementação, em que uma camada depende da outra para garantia de execução com sucesso. No fluxo de execução, do ponto de vista da pessoa usuária, a camada 3 é a primeira a ser chamada e chama a camada 2 que chama a camada 1. A descrição das camadas, em contraponto, foi feita da camada 1 para a camada 3.  
+
+### Descrição das Camadas
+
+#### Camada 1 - Acesso e Persistência
+Camada responsável por: 
 - Carregar o dicionário ao início do funcionamento;
 - Atualizar e expor os dados durante o fluxo de execução e
 - Armazenar o dicionário ao final da execução, para que as informações não se percam.
@@ -227,6 +235,9 @@ get_all: coleta todos os valores
 delete: deleta um valor a partir de uma chave
 fim: finaliza o servidor
 ```
+
+Digite **fim** como entrada para o servidor para desligar. 
+Se houver clientes conectados, só irá terminar quando todos estiverem desconectados.
 
 Depois, suba o lado do cliente, executando o seguinte comando no terminal:
 
