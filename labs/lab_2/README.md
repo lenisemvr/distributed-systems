@@ -21,9 +21,6 @@ em uma entrada existente.
 - A **remoção** de uma entrada no dicionário somente poderá ser feita pelo **administrador**
 do dicionário.
 
-Para meu entendimento da resolução do trabalho, fiz o seguinte desenho, a partir da descrição do laboratório:
-![](assets/draw-remote-dictionary.png)
-
 
 ## Atividade 1
 
@@ -40,8 +37,7 @@ software.
 **A resolução se encontra abaixo, mas também pode ser vista [neste arquivo](activity_1.md).**
 
 ### Arquitetura de Software
-
-A partir da descrição da atividade e da [imagem](assets/draw-remote-dictionary.png) que fiz com base nas informações dispostas, foi possível seguir com o desenvolvimento da tarefa.  
+ 
 Dado o meu entendimento do problema e o conteúdo da disciplina, a minha escolha arquitetural para resolução deste trabalho foi **em camadas**, conforme é possível visualizar na figura abaixo:  
 ![](assets/layered-architecture.png)
 
@@ -113,7 +109,10 @@ para uma **arquitetura de sistema cliente/servidor** de dois níveis, com um ser
 
 Foi escolhida uma arquitetura **centralizada**, pois o desenvolvimento da solução segue um modelo **cliente/servidor**, em que boa parte dos componentes de software estão implementados no lado do servidor e clientes remotos acessam suas funcionalidades, conforme a descrição da tarefa.
 
-A [imagem](assets/draw-remote-dictionary.png) que fiz a partir da descrição e a [arquitetura de software](activity_1.md) feita na atividade 1 me auxiliaram a fazer esta arquitetura, que pode ser visualizada a partir da imagem a seguir:
+Para meu entendimento da resolução do trabalho, fiz o seguinte desenho, a partir da descrição do laboratório:
+![](assets/draw-remote-dictionary.png)
+
+A [imagem](assets/draw-remote-dictionary.png) acima e a [arquitetura de software](activity_1.md) feita na atividade 1 me auxiliaram a fazer esta arquitetura, que pode ser visualizada a partir da imagem a seguir:
 ![](assets/system-architecture.png)
 
 A imagem é apenas um recurso visual para auxiliar no entendimento da disposição dos componentes na arquitetura de sistema, que segue a seguinte organização descrita a seguir.
