@@ -124,10 +124,6 @@ class Server:
                     client = multiprocessing.Process(target=self.handle_request, args=(client_socket, addr))
                     client.start()
                     self.clients.append(client)
-                    # client_socket.setblocking(False) #configura o socket para o modo nao-bloqueante
-                    # client = threading.Thread(target=self.handle_request, args=(client_socket, addr))
-                    # client.start()
-                    # self.entries.append(client_socket) #inclui o socket do cliente nas entradas de interesse
                 elif ready == sys.stdin: #entrada padrao
                     self.admin_cmd()
                 else:

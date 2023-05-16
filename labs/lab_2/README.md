@@ -45,6 +45,7 @@ A partir da descrição da atividade e da [imagem](assets/draw-remote-dictionary
 Dado o meu entendimento do problema e o conteúdo da disciplina, a minha escolha arquitetural para resolução deste trabalho foi **em camadas**, conforme é possível visualizar na figura abaixo:  
 ![](assets/layered-architecture.png)
 
+<<<<<<< HEAD
 Essa escolha foi muito baseada em como entendi o fluxo e como me parecia ser uma boa implementação, em que uma camada só pode conversar com suas camadas vizinhas e uma depende da outra para garantia de execução com sucesso. No fluxo de execução, do ponto de vista da pessoa usuária, a camada 3 é a primeira a ser chamada.  
 
 ## Descrição das Camadas
@@ -80,12 +81,38 @@ Camada responsável pela garantia de execução das ações pedidas pela camada 
 
 ### Camada 1 - Acesso e Persistência
 Camada composta pelo componente de **acesso e persistência (COMPONENTE 1)**, que é responsável por: 
+=======
+Essa escolha foi muito baseada em como entendi o fluxo e como me parecia ser uma boa implementação, em que uma camada depende da outra para garantia de execução com sucesso. No fluxo de execução, do ponto de vista da pessoa usuária, a camada 3 é a primeira a ser chamada e chama a camada 2 que chama a camada 1. A descrição das camadas, em contraponto, foi feita da camada 1 para a camada 3.  
+
+### Descrição das Camadas
+
+#### Camada 1 - Acesso e Persistência
+Camada responsável por: 
+>>>>>>> 6d7c10c38062f94485ca00c87f5c37092e6aee9c
 - Carregar o dicionário ao início do funcionamento;
 - Atualizar e expor os dados durante o fluxo de execução e
 - Armazenar o dicionário ao final da execução, para que as informações não se percam.
 
 Dessa forma, visa garantir a persistência dos dados.
+<<<<<<< HEAD
 Esta camada é utilizada pela camada 2, mas também pode ser chamada diretamente pela camada 3.
+=======
+Esta camada é utilizado pela camada 2.
+
+#### Camada 2 - Processamento das Requisições
+Camada responsável pela garantia de execução das ações pedidas pela camada 3 da seguinte forma:
+- Expõe os dados requisitados pela camada 3, fazendo uso da camada 1;
+- Atualiza os dados a partir da requisição da camada 3, fazendo uso da camada 1;
+
+Esta camada também possibilita interação com administrador, de forma a permitir a remoção de dados, persistidos a partir da camada 1, e a finalização do servidor, caso não haja clientes ativos.
+
+#### Camada 3 - Interface com o Usuário
+
+Camada responsável pela comunicação com o usuário, permitindo as seguintes ações:
+- Escrita informando par de chave e valor. Essa requisição será feita à camada 2, que é responsável pelo retorno da confirmação de que a nova entrada foi inserida e o valor foi acrescentado ou, em caso de chave já existente, que o valor foi acrescentado. 
+- Consulta informando uma chave. Essa requisição será feita à camada 2, que é responsável pelo retorno da lista de valores associados a essa chave em ordem alfabética (lista vazia se a chave não existir).  
+Em ambas as ações, a camada 2, por sua vez irá fazer uso da camada 1 para que isso seja possível de forma segura e persistente, conforme descrito acima.
+>>>>>>> 6d7c10c38062f94485ca00c87f5c37092e6aee9c
 
 ## Atividade 2
 
@@ -208,6 +235,24 @@ O arquivo Dockerfile foi criado apenas para auxiliar no desenvolvimento, dado pr
 
 O código se encontra documentado.  
 
+## Resolução da Atividade 3
+
+São os arquivos de código presentes nesse repositório. De forma que:
+```
+├── client.py           -> Classe do cliente, que implementa o componente de interface com a pessoa usuária e comunicação com o servidor
+├── data.json           -> Representa o arquivo que auxilia na persistência do dicionário
+├── server              -> Módulo que apresenta Classes essenciais para a execução do Servidor, dados seus componentes.
+│   ├── __init__.py
+│   ├── data.py         -> Classe de dados, que implementa o componente de acesso e persistência dos dados
+│   └── processor.py    -> Classe de processamento, que implementa o componente de processamento das requisições
+                           Comunica-se com a Classe de dados para viabilizar isso e retorna uma mensagem que será enviada ao cliente
+└── server.py           -> Classe do servidor, que implementa a comunicação com o cliente, permite a comunicação de múltiplos clientes
+                           e se apoia nas classes de dados e processamento para garantir o funcionamento da proposta
+```
+O arquivo Dockerfile foi criado apenas para auxiliar no desenvolvimento, dado problemas encontrados com as bibliotecas utilizadas (Threading/Multiprocessing) e o meu sistema operacional (macOS). Felizmente, consegui contornar usando a versão 3.7 do Python e comentando a linha 45 do arquivo `server.py`.
+
+O código se encontra documentado.  
+
 #### Disponibilize seu código
 Disponibilize o código da sua aplicação em um ambiente de acesso remoto (GitHub ou GitLab) e use o formulário de entrega do laboratório para encaminhar as informações solicitadas.
 
@@ -228,6 +273,13 @@ get_all: coleta todos os valores
 delete: deleta um valor a partir de uma chave
 fim: finaliza o servidor
 ```
+get: coleta um valor a partir de uma chave
+get_all: coleta todos os valores
+delete: deleta um valor a partir de uma chave
+fim: finaliza o servidor
+```
+
+Depois, suba o lado do cliente, executando o seguinte comando no terminal:
 
 Depois, suba o lado do cliente, executando o seguinte comando no terminal:
 
@@ -238,6 +290,13 @@ python3 client.py <host_do_servidor> <porta_do_servidor>
 Aceita conexões concorrentes. Sinta-se livre para usufruir disso :)
 
 Os comandos disponíveis para o cliente são:
+```
+get - Consultar os valores para uma palavra.
+Ex.: Para consultar a palavra "teste", digite "get teste"
+set - Adicionar UM único valor por vez para uma palavra. Se a palavra não existir, será criada no dicionário
+Ex.: Para adicionar o valor "valor" para a palavra "teste", digite "set teste valor"
+"help" - exibe esta mensagem novamente
+"fim" - encerrar o programa
 ```
 get - Consultar os valores para uma palavra.
 Ex.: Para consultar a palavra "teste", digite "get teste"
