@@ -101,7 +101,6 @@ para uma **arquitetura de sistema cliente/servidor** de dois níveis, com um ser
 ## Resolução da Atividade 2 
 **A resolução encontra-se abaixo, mas também pode ser vista [neste arquivo](activity_2.md).**
 
-
 ### Arquitetura de Sistema
 
 Foi escolhida uma arquitetura **centralizada**, pois o desenvolvimento da solução segue um modelo **cliente/servidor**, em que boa parte dos componentes de software estão implementados no lado do servidor e clientes remotos acessam suas funcionalidades, conforme a descrição da tarefa.
