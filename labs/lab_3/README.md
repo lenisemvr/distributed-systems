@@ -37,16 +37,7 @@ Primeiro, suba o lado do servidor, executando o seguinte comando no terminal:
 python3 server.py <porta>
 ```
 
-O servidor possui interface via linha de comando para a pessoa administradora. Os comandos possíveis são:
-```
-get: coleta um valor a partir de uma chave
-get_all: coleta todos os valores
-delete: deleta um valor a partir de uma chave
-fim: finaliza o servidor
-```
-
-Digite **fim** como entrada para o servidor para desligar. 
-Se houver clientes conectados, só irá terminar quando todos estiverem desconectados.
+Digite **ctrl+c** para o servidor ser desligado. 
 
 Depois, suba o lado do cliente, executando o seguinte comando no terminal:
 
@@ -59,14 +50,19 @@ Aceita conexões concorrentes. Sinta-se livre para usufruir disso :)
 Os comandos disponíveis para o cliente são:
 ```
 get - Consultar os valores para uma palavra.
-Ex.: Para consultar a palavra "teste", digite "get teste"
-set - Adicionar UM único valor por vez para uma palavra. Se a palavra não existir, será criada no dicionário
-Ex.: Para adicionar o valor "valor" para a palavra "teste", digite "set teste valor"
-"help" - exibe esta mensagem novamente
-"fim" - encerrar o programa
+Digite "get" e siga as instruções do prompt
+set - Adicionar UM único valor por vez para uma palavra. Se a palavra não existir, será criada no dicionário.
+Digite "set" e siga as instruções do prompt
+delete - Apagar uma palavra. Se a palavra não existir no dicionário, o servidor irá informar.
+Digite "delete" e siga as instruções do prompt
+Digite "help" para exibir esta mensagem novamente
+Digite "fim" para encerrar o programa
 ```
 
 Digite **fim** como entrada para o cliente para encerrar a conexão com o servidor.
 
-Digite **fim** como entrada para o servidor para desligar.
+## TO-DO
+ - estudar `classpartial` para não usar o `init` ou fazer o `init` chamar o super para evitar o caos
+ - verificar se o desligamento do servidor é a partir de `keyboard interrupt` ou a partir do cliente
+ - executar mais testes
 
