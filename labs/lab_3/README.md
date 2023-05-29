@@ -61,8 +61,4 @@ Digite "fim" para encerrar o programa
 
 Digite **fim** como entrada para o cliente para encerrar a conexão com o servidor.
 
-## TO-DO
- - estudar `classpartial` para não usar o `init` ou fazer o `init` chamar o super para evitar o caos
- - verificar se o desligamento do servidor é a partir de `keyboard interrupt` ou a partir do cliente
- - executar mais testes
-
+Digite `ctrl + c` para encerrar o servidor.

@@ -3,10 +3,11 @@ Responsável por receber requisicoes de clientes e processa-las, retornando o re
 Pode ser executado várias vezes para testar o servidor.
 Para executar, digite:
 python3 server.py <porta-do-servidor>'''
-import pprint
-import select
+
 import sys
 import rpyc
+
+from rpyc.utils.server import ThreadedServer
 
 import server.data as data
 
@@ -18,6 +19,14 @@ class DictionaryServer(rpyc.Service):
     def __init__(self):
         '''Inicializa dicionário'''
         self.data = data.Data('data.json')
+    
+    def on_connect(self, conn):
+        print('cliente conectado')
+        pass
+
+    def on_disconnect(self, conn):
+        print('cliente desconectado')
+        pass
 
     @rpyc.exposed
     def get(self, key):
@@ -62,8 +71,8 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         print(f"Chamada incorreta.\nTente: {sys.argv[0]} <porta>")
         sys.exit(1)
-    try:
-        dictionary_server = rpyc.utils.server.ThreadedServer(DictionaryServer, port=sys.argv[1])
+    try: 
+        dictionary_server = ThreadedServer(DictionaryServer, port=sys.argv[1])
         print("Pronto para receber conexões...")
         dictionary_server.start()
     except Exception as exc:  #erro na inicializacao do socket

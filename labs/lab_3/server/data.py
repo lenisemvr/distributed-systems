@@ -26,6 +26,21 @@ class Data:
         except FileNotFoundError:
             file = open(filename, 'w+')
         return file
+    
+    def save(self):
+        '''Salva o dicionario no arquivo'''
+        self.lock.acquire()
+        self.file.seek(0)
+        try:
+            data = json.load(self.file)
+        except json.decoder.JSONDecodeError:
+            print("Dicionário está vazio. Por favor, insira um valor via cliente.")
+            data = {}
+        self.file.seek(0)
+        json.dump(data, self.file)
+        self.file.truncate()
+        self.lock.release()
+
 
     def get(self, key):
         '''Retorna o valor da chave passada como argumento'''
